@@ -28,6 +28,3 @@ module.exports.create = async (req, res) => {
     res.json({ status: 500, data: err });
   }
 };
-
-
-

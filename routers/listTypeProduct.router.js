@@ -18,12 +18,14 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+var cpUpload = upload.fields([{ name: "image", maxCount: 1 }]);
+
 // var cpUpload = upload.fields([{ name: "backgroud_avatar", maxCount: 5 }]);
 // type product api
 router.get("/type-products", controller1.typeProduct);
 router.post(
   "/type-products/create",
-  upload.array("img", 12),
+  upload.array("image", 12),
   controller1.create
 );
 
@@ -35,7 +37,16 @@ router.put("/select-list/update/:id", controller2.update);
 router.delete("/select-list/delete/:id", controller2.delete);
 
 // api product
-router.post("/products", controller3.listProduct);
-router.put("/products/:type", controller3.findBytype);
-router.delete("/products/:id", controller3.findById);
+// router.delete("/products/:id", controller3.findById);
+router.post("/products/add-product", cpUpload, controller3.create);
+router.put("/products/update", cpUpload, controller3.update);
+router.get("/products", controller3.listProduct);
+router.get("/products/:type", controller3.findBytype);
+router.get("/products/detail/:id", controller3.findById);
+router.get("/products/search/product", controller3.search);
+router.get("/products/pagination/:page", controller3.pagination);
+router.post("/products/blog/:id", controller3.blog);
+router.post("/products/comment/:id", controller3.comment);
+router.post("/products/rep/comment/:id", controller3.findProductByIdComment);
+router.delete("/products/delete/:id", controller2.delete);
 module.exports = router;
