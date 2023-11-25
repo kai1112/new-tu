@@ -166,6 +166,25 @@ module.exports.comment = async (req, res) => {
   }
 };
 
+
+module.exports.review = async (req, res) => {
+  try {
+    let findProduct = await productModel.findOne({ _id: req.params.id });
+    if (!findProduct)
+      return res.json({ status: 404, message: "can not find product" });
+    let review = {};
+    if (req.body.name) review.name = req.body.name;
+    if (req.body.comment) review.comment = req.body.comment;
+    if (req.body.start) review.start = req.body.start;
+    findProduct.reviews.push(review);
+    await productModel.updateOne({ _id: req.params.id }, findProduct);
+    let product = await productModel.findOne({ _id: req.params.id });
+    return res.json({ status: 200, data: product });
+  } catch (err) {
+    res.json({ status: 500, data: err });
+  }
+};
+
 module.exports.findProductByIdComment = async (req, res) => {
   try {
     let findProduct = await productModel.findOne({ _id: req.params.id });

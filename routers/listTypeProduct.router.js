@@ -38,15 +38,38 @@ router.delete("/select-list/delete/:id", controller2.delete);
 
 // api product
 // router.delete("/products/:id", controller3.findById);
-router.post("/products/add-product", cpUpload, controller3.create);
-router.put("/products/update", cpUpload, controller3.update);
-router.get("/products", controller3.listProduct);
+router.post(
+  "/products/add-product",
+  auth.checkToken,
+  auth.checkRoleAdmin,
+  cpUpload,
+  controller3.create
+);
+router.put(
+  "/products/update",
+  auth.checkToken,
+  auth.checkRoleAdmin,
+  cpUpload,
+  controller3.update
+);
+router.get(
+  "/products",
+  auth.checkToken,
+  auth.checkRoleAdmin,
+  controller3.listProduct
+);
 router.get("/products/:type", controller3.findBytype);
 router.get("/products/detail/:id", controller3.findById);
 router.get("/products/search/product", controller3.search);
 router.get("/products/pagination/:page", controller3.pagination);
-router.post("/products/blog/:id", controller3.blog);
+router.post(
+  "/products/blog/:id",
+  auth.checkToken,
+  auth.checkRoleAdmin,
+  controller3.blog
+);
 router.post("/products/comment/:id", controller3.comment);
+router.post("/products/rate/:id", controller3.review);
 router.post("/products/rep/comment/:id", controller3.findProductByIdComment);
 router.delete("/products/delete/:id", controller2.delete);
 module.exports = router;
